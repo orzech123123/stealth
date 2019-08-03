@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class CameraController : MonoBehaviour
 {
@@ -9,10 +10,12 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float _borderOffset = 0.05f;
 
-    // Start is called before the first frame update
-    void Start()
+    private InputManager _inputManager;
+
+    [Inject]
+    void Initialize(InputManager inputManager)
     {
-        
+        _inputManager = inputManager;
     }
 
     // Update is called once per frame
