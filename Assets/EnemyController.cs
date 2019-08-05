@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -20,7 +21,11 @@ public class EnemyController : MonoBehaviour
         _pois = pois;
     }
 
-    // Update is called once per frame
+    void Start()
+    {
+        StartCoroutine(ChangeAngle());
+    }
+        
     void Update()
     {
         //        if(_inputManager.WasClicked)
@@ -49,5 +54,30 @@ public class EnemyController : MonoBehaviour
 
             GetComponent<Animator>().SetBool("isWalking", false);
         }
+
+        //var faja = transform.Find("Faja").Find("Cylinder");
+        //faja.transform.eulerAngles = new Vector3(faja.transform.eulerAngles.x, _targetAngle, faja.transform.eulerAngles.z);
+        //        var angle = Mathf.LerpAngle(faja.localEulerAngles.y, _targetAngle, Time.time);
+        //        faja.transform.localEulerAngles = new Vector3(0, angle, 0);
+        //        if (faja.transform.localEulerAngles.y == _targetAngle)
+        //        {
+        //            _targetAngle = -_targetAngle;
+        //        }
+//        var desiredRotQ = Quaternion.Euler(faja.transform.localEulerAngles.x, 1000000, faja.transform.localEulerAngles.z);
+//        faja.transform.localRotation = Quaternion.Lerp(faja.transform.localRotation, desiredRotQ, Time.deltaTime * 1f);
+//        if (faja.transform.rotation.y == _targetAngle)
+//        {
+//            _targetAngle = -_targetAngle;
+//        }
     }
+
+    private IEnumerator ChangeAngle()
+    {
+        yield return new WaitForSeconds(4);
+        _targetAngle = -_targetAngle;
+
+        StartCoroutine(ChangeAngle());
+    }
+
+    private float _targetAngle = 90;
 }
