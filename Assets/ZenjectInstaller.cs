@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -7,5 +8,6 @@ public class ZenjectInstaller : MonoInstaller<ZenjectInstaller>
     {
         Container.BindInterfacesAndSelfTo<InputManager>().AsSingle();
         Container.BindInterfacesAndSelfTo<ApplicationManager>().AsSingle();
+        Container.Bind<IPoi>().FromComponentsInHierarchy(includeInactive: false).AsTransient();
     }
 }
