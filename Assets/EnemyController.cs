@@ -14,6 +14,10 @@ public class EnemyController : MonoBehaviour
     private InputManager _inputManager;
     private List<IPoi> _pois;
 
+    [SerializeField] protected Vector3 m_from = new Vector3(0.0F, 45.0F, 0.0F);
+    [SerializeField] protected Vector3 m_to = new Vector3(0.0F, -45.0F, 0.0F);
+    [SerializeField] protected float m_frequency = 1.0F;
+
     [Inject]
     void Initialize(InputManager inputManager, List<IPoi> pois)
     {
@@ -21,28 +25,18 @@ public class EnemyController : MonoBehaviour
         _pois = pois;
     }
 
-    void Start()
+    void FixedUpdate()
     {
-        StartCoroutine(ChangeAngle());
+        var faja = transform.Find("Faja");
+        Quaternion from = Quaternion.Euler(this.m_from);
+        Quaternion to = Quaternion.Euler(this.m_to);
+
+        float lerp = 0.5F * (1.0F + Mathf.Sin(Mathf.PI * Time.realtimeSinceStartup * this.m_frequency));
+        faja.transform.localRotation = Quaternion.Lerp(from, to, lerp);
     }
-        
+
     void Update()
     {
-        //        if(_inputManager.WasClicked)
-        //        {
-        //            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
-        //            RaycastHit hit;
-        //
-        //            if(Physics.Raycast(ray, out hit))
-        //            {
-        //                agent.SetDestination(hit.point);
-        //            }
-        //        }
-
-//        if (agent.)
-//        {
-//        }
-
         if (Mathf.Abs(agent.velocity.x) > 0 || Mathf.Abs(agent.velocity.y) > 0 || Mathf.Abs(agent.velocity.z) > 0)
         {
             GetComponent<Animator>().SetBool("isWalking", true);
@@ -54,30 +48,5 @@ public class EnemyController : MonoBehaviour
 
             GetComponent<Animator>().SetBool("isWalking", false);
         }
-
-        //var faja = transform.Find("Faja").Find("Cylinder");
-        //faja.transform.eulerAngles = new Vector3(faja.transform.eulerAngles.x, _targetAngle, faja.transform.eulerAngles.z);
-        //        var angle = Mathf.LerpAngle(faja.localEulerAngles.y, _targetAngle, Time.time);
-        //        faja.transform.localEulerAngles = new Vector3(0, angle, 0);
-        //        if (faja.transform.localEulerAngles.y == _targetAngle)
-        //        {
-        //            _targetAngle = -_targetAngle;
-        //        }
-//        var desiredRotQ = Quaternion.Euler(faja.transform.localEulerAngles.x, 1000000, faja.transform.localEulerAngles.z);
-//        faja.transform.localRotation = Quaternion.Lerp(faja.transform.localRotation, desiredRotQ, Time.deltaTime * 1f);
-//        if (faja.transform.rotation.y == _targetAngle)
-//        {
-//            _targetAngle = -_targetAngle;
-//        }
     }
-
-    private IEnumerator ChangeAngle()
-    {
-        yield return new WaitForSeconds(4);
-        _targetAngle = -_targetAngle;
-
-        StartCoroutine(ChangeAngle());
-    }
-
-    private float _targetAngle = 90;
 }
