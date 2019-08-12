@@ -1,6 +1,6 @@
-﻿using Vector3 = UnityEngine.Vector3;
+﻿using UnityEngine;
 
 public interface IPoi
 {
-    Vector3 Position { get; } 
+    Vector3 Position { get; }
 }

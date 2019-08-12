@@ -3,23 +3,23 @@ using Zenject;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed = 5f;
-    [SerializeField]
-    private float _borderOffset = 0.05f;
-
-    private InputManager _inputManager;
     private ApplicationManager _applicationManager;
 
+    [SerializeField] private readonly float _borderOffset = 0.05f;
+
+    private InputManager _inputManager;
+
+    [SerializeField] private readonly float _speed = 5f;
+
     [Inject]
-    void Initialize(InputManager inputManager, ApplicationManager applicationManager)
+    private void Initialize(InputManager inputManager, ApplicationManager applicationManager)
     {
         _inputManager = inputManager;
         _applicationManager = applicationManager;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (_applicationManager.Platform == RuntimePlatform.Android)
         {
@@ -30,9 +30,10 @@ public class CameraController : MonoBehaviour
 
                 if (Mathf.Abs(y) > 0)
                 {
-                    var forwardDir = (transform.up + transform.forward);
+                    var forwardDir = transform.up + transform.forward;
                     transform.Translate(new Vector3(forwardDir.x, 0, forwardDir.z).normalized * -y / 100 * Time.deltaTime * _speed, Space.World);
                 }
+
                 if (Mathf.Abs(x) > 0)
                 {
                     transform.Translate(transform.right.normalized * -x / 100 * Time.deltaTime * _speed, Space.World);
@@ -41,19 +42,22 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            var forwardDir = (transform.up + transform.forward);
+            var forwardDir = transform.up + transform.forward;
             if (_inputManager.CursorPosition.y > Screen.height * (1 - _borderOffset))
             {
                 transform.Translate(new Vector3(forwardDir.x, 0, forwardDir.z).normalized * Time.deltaTime * _speed, Space.World);
             }
+
             if (_inputManager.CursorPosition.y < Screen.height * _borderOffset)
             {
                 transform.Translate(-new Vector3(forwardDir.x, 0, forwardDir.z).normalized * Time.deltaTime * _speed, Space.World);
             }
+
             if (_inputManager.CursorPosition.x > Screen.width * (1 - _borderOffset))
             {
                 transform.Translate(transform.right.normalized * Time.deltaTime * _speed, Space.World);
             }
+
             if (_inputManager.CursorPosition.x < Screen.width * _borderOffset)
             {
                 transform.Translate(-transform.right.normalized * Time.deltaTime * _speed, Space.World);

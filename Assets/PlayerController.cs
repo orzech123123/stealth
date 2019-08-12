@@ -1,34 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
 public class PlayerController : MonoBehaviour
 {
-    public Camera camera;
-    public NavMeshAgent agent;
-
     private InputManager _inputManager;
     private List<IPoi> _pois;
+    public NavMeshAgent agent;
+    public Camera camera;
 
     [Inject]
-    void Initialize(InputManager inputManager, List<IPoi> pois)
+    private void Initialize(InputManager inputManager, List<IPoi> pois)
     {
         _inputManager = inputManager;
         _pois = pois;
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if(_inputManager.WasClicked)
+        if (_inputManager.WasClicked)
         {
-            Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+            var ray = camera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-        
-            if(Physics.Raycast(ray, out hit))
+
+            if (Physics.Raycast(ray, out hit))
             {
                 agent.SetDestination(hit.point);
             }

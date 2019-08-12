@@ -1,11 +1,18 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 public class InputManager : ITickable
 {
     private Vector3? _lastClickPosition;
     private Vector3? _lastMovePosition;
+
+    public bool WasClicked { get; private set; }
+
+    public bool WasSwiped { get; private set; }
+
+    public Vector3 SwipeDelta { get; private set; } = Vector3.zero;
+
+    public Vector3 CursorPosition => Input.mousePosition;
 
     public void Tick()
     {
@@ -30,12 +37,4 @@ public class InputManager : ITickable
             SwipeDelta = _lastMovePosition.Value - _lastClickPosition.Value;
         }
     }
-
-    public bool WasClicked { get; private set; }
-
-    public bool WasSwiped { get; private set; }
-
-    public Vector3 SwipeDelta { get; private set; } = Vector3.zero;
-
-    public Vector3 CursorPosition => Input.mousePosition;
 }
