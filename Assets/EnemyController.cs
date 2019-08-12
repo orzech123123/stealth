@@ -43,7 +43,7 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            var poi = _pois[UnityEngine.Random.Range(0, _pois.Count())];
+            var poi = _pois[UnityEngine.Random.Range(0, _pois.Count)];
             agent.SetDestination(poi.Position);
 
             GetComponent<Animator>().SetBool("isWalking", false);
